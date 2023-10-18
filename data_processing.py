@@ -60,7 +60,7 @@ def normalize(lc):
         - Added columns before normalization : max_flux, max_flux_time
     """
 
-    normband = lc[(lc["BAND"] == "r ") | (lc["BAND"] == "PSr")]
+    normband = lc[(lc["BAND"] == "r ")]
     maxi = normband["FLUXCAL"].max()
 
     lc["max_flux"] = maxi
@@ -295,11 +295,9 @@ def generate_plasticc_lcs(df):
         table['BAND'] = kern.PASSBANDS[table['passband']]
         table.meta['SNID'] = SNID
         
-
         detections = table[table['detected_bool'] == 1]
-        det_per_band = dict(zip(*np.unique(detections["BAND"], return_counts=True)))
 
-        if (len(detections)==0) | (len(table)<kern.min_total_points):
+        if (len(detections)==0) | (len(table)<kern.min_total_points) | (len(table[table['BAND'] == 'r '])==0):
             continue
             
         yield table
