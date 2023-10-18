@@ -299,7 +299,7 @@ def generate_plasticc_lcs(df):
         detections = table[table['detected_bool'] == 1]
         det_per_band = dict(zip(*np.unique(detections["BAND"], return_counts=True)))
 
-        if any(det_per_band.get(band, 0) < min_det for band, min_det in kern.min_det_per_band.items()):
+        if (len(detections)==0) | (len(table)<kern.min_total_points):
             continue
             
         yield table
